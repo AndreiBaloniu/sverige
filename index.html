@@ -153,13 +153,18 @@ nav button.on{color:var(--accent)}
 #mapWrap{position:fixed;left:0;right:0;z-index:1;background:var(--bg)}
 #map{position:absolute;inset:0}
 .mapbar{position:absolute;top:10px;left:12px;right:68px;max-width:360px}
-.mapbar .seg{background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.08);margin:0}
+.mapbar .seg{padding:2px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.08);margin:0}
 .mapbtns{position:absolute;top:10px;right:12px;display:flex;flex-direction:column;gap:8px}
 .fab{width:44px;height:44px;border-radius:14px;border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;box-shadow:0 2px 10px rgba(0,0,0,.1)}
 .fab.on{background:var(--accent);color:#fff}
 .mapnote{position:absolute;left:12px;right:12px;bottom:36px;background:var(--card);border-radius:14px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.1);font-size:14px;display:flex;gap:10px;align-items:center}
 .mapnote[hidden]{display:none}
 .maplibregl-ctrl-attrib{font-size:10px}
+.mapsearch{width:100%;display:flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:11px 12px;margin-bottom:8px;background:var(--card);color:var(--ink2);box-shadow:0 2px 10px rgba(0,0,0,.08);font-size:15px;text-align:left}
+.navpanel{position:absolute;left:10px;right:10px;bottom:10px;background:var(--card);border-radius:18px;padding:14px;box-shadow:0 4px 18px rgba(0,0,0,.14)}
+.navpanel[hidden]{display:none}
+.navtop{display:flex;gap:10px;margin-bottom:10px}
+.navinstr{font-size:19px;font-weight:600;line-height:1.25}
 .progress{height:6px;background:var(--soft);border-radius:6px;overflow:hidden;margin-top:6px}
 .progress i{display:block;height:100%;background:var(--accent);width:0}
 mark{background:var(--butter);color:inherit;border-radius:3px;padding:0 1px}
@@ -188,6 +193,7 @@ mark{background:var(--butter);color:inherit;border-radius:3px;padding:0 1px}
 <div id="mapWrap" hidden>
   <div id="map"></div>
   <div class="mapbar">
+    <button class="mapsearch" id="mapSearch"><svg class="i sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Search Stockholm</button>
     <div class="seg" id="mapSeg"><button data-mf="all">All</button><button data-mf="trip">Our trip</button><button data-mf="saved">Saved</button></div>
   </div>
   <div class="mapbtns">
@@ -195,6 +201,7 @@ mark{background:var(--butter);color:inherit;border-radius:3px;padding:0 1px}
     <button class="fab" id="dlBtn" aria-label="Offline maps"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></button>
   </div>
   <div class="mapnote" id="mapNote" hidden></div>
+  <div class="navpanel" id="navPanel" hidden></div>
 </div>
 
 <div class="sheet-bg" id="sheetBg"><div class="sheet" id="sheet"></div></div>

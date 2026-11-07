@@ -1,7 +1,7 @@
 // Offline-first service worker.
 // Bump VERSION whenever you change any app file so phones pick up the update.
 // Map files (maps/*.pmtiles) live in their own cache and are only downloaded when the user asks.
-const VERSION = "sverige-v3";
+const VERSION = "sverige-v4";
 const MAP_CACHE = "sverige-maps";
 const FILES = [
   "./", "./index.html", "./app.js", "./data.js", "./manifest.webmanifest",
@@ -54,8 +54,8 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return; // outside links go straight to the network
-  if (url.pathname.endsWith(".pmtiles")) { e.respondWith(serveMap(e.request)); return; }
-  if (url.pathname.endsWith("/maps/index.json")) { // network first, cached fallback
+  if (/\/maps\/.*\.(pmtiles|bin)$/.test(url.pathname) || url.pathname.endsWith("/maps/stockholm-search.json")) { e.respondWith(serveMap(e.request)); return; }
+  if (url.pathname.endsWith("/maps/index.json") || url.pathname.endsWith("/maps/nav.json")) { // network first, cached fallback
     e.respondWith(fetch(e.request).then((res) => { if (res.ok) { const c = res.clone(); caches.open(VERSION).then((ca) => ca.put(e.request, c)); } return res; })
       .catch(() => caches.match(e.request)));
     return;
