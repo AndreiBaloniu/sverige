@@ -1,0 +1,16 @@
+{
+  "id": "stockholm-nav",
+  "name": "Stockholm walking directions & search",
+  "files": [
+    "maps/stockholm-walk.bin",
+    "maps/stockholm-search.json"
+  ],
+  "bytes": 10410626,
+  "bbox": [
+    17.85,
+    59.27,
+    18.2,
+    59.39
+  ],
+  "build": "20261107"
+}
