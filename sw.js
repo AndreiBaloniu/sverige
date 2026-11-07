@@ -1,6 +1,6 @@
 // Offline-first service worker: everything is cached on first visit.
 // Bump VERSION whenever you change any file so phones pick up the update.
-const VERSION = "mysig-sverige-v1";
+const VERSION = "sverige-v2";
 const FILES = [
   "./", "./index.html", "./app.js", "./data.js", "./manifest.webmanifest",
   "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png"

@@ -1,4 +1,4 @@
-# Mysig Sverige: a cozy offline Sweden guide for iPhone
+# Sverige: a simple offline Sweden guide for iPhone
 
 A Progressive Web App. Once installed to your Home Screen, it works with no internet at all:
 the itinerary, places, phrases, notes, journal and packing list are all stored on the phone.
@@ -22,7 +22,7 @@ Then, on the iPhone:
 4. Open it from the Home Screen icon. Done: airplane mode works from now on.
 
 Tip: also download Sweden in **Apple Maps → Offline Maps** so the "Open in Maps" buttons work offline.
-The "📍 Near" button uses GPS, which works without internet.
+The "Near" button on the Places tab uses GPS, which works without internet.
 
 ## Editing
 - All content is in `data.js` (itinerary days, places with coordinates, fika, phrases, packing list).
@@ -31,3 +31,10 @@ The "📍 Near" button uses GPS, which works without internet.
 ## Your data
 Ticks, notes, favourites and journal live in the app's local storage on the phone.
 Use **Notes → Copy backup** now and then and paste it into Apple Notes.
+
+## Using it
+- **Plan:** tap + on the day ideas you want; they move into "Our trip". Reorder with the arrows. Open a day to tick off stops, add your own stops, or "Edit day" to hide suggestions you don't want. "New day" creates a blank day of your own.
+- **Places:** grouped by region, filter by type or Saved, search, or sort by distance. "Add a place" saves your own spots (optionally with your current GPS location). Any place can be added to a day.
+- **Guide:** essentials, fika, phrases and words, seasons.
+- **My trip:** start date, saved and added places, journal, packing list, backup.
+- The search button in the top corner searches everything at once.
