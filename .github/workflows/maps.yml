@@ -1,0 +1,79 @@
+name: Build offline maps
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["maps/regions.txt", ".github/workflows/maps.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maps
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pmtiles CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download -R protomaps/go-pmtiles -p '*Linux_x86_64.tar.gz' -O pmtiles.tgz
+          tar xzf pmtiles.tgz pmtiles
+          sudo mv pmtiles /usr/local/bin/
+          pmtiles version || true
+
+      - name: Find the latest Protomaps build
+        run: |
+          for i in $(seq 0 20); do
+            d=$(date -u -d "-$i day" +%Y%m%d)
+            if curl -sfI "https://build.protomaps.com/$d.pmtiles" > /dev/null; then
+              echo "SRC=https://build.protomaps.com/$d.pmtiles" >> "$GITHUB_ENV"
+              echo "BUILD=$d" >> "$GITHUB_ENV"
+              echo "Using build $d"
+              exit 0
+            fi
+          done
+          echo "No recent build found"; exit 1
+
+      - name: Extract regions
+        run: |
+          set -e
+          grep -v '^#' maps/regions.txt | grep -v '^\s*$' > /tmp/regions
+          while IFS='|' read -r id label bbox maxz; do
+            echo "::group::$id ($label) z$maxz"
+            z=$maxz
+            while true; do
+              rm -f "maps/$id.pmtiles"
+              pmtiles extract "$SRC" "maps/$id.pmtiles" --bbox="$bbox" --maxzoom="$z"
+              size=$(stat -c %s "maps/$id.pmtiles")
+              echo "$id z$z -> $size bytes"
+              if [ "$size" -lt 95000000 ] || [ "$z" -le 8 ]; then break; fi
+              z=$((z-1))
+            done
+            echo "$id|$label|$bbox|$z|$size" >> /tmp/built
+            echo "::endgroup::"
+          done < /tmp/regions
+          python3 - <<'PY'
+          import json, os
+          out = []
+          for line in open('/tmp/built'):
+              i, label, bbox, z, size = line.strip().split('|')
+              out.append({"id": i, "name": label, "file": f"maps/{i}.pmtiles", "bbox": [float(x) for x in bbox.split(',')], "maxzoom": int(z), "bytes": int(size)})
+          json.dump({"build": os.environ["BUILD"], "regions": out}, open('maps/index.json', 'w'), indent=2, ensure_ascii=False)
+          print(open('maps/index.json').read())
+          PY
+
+      - name: Commit maps
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add maps/*.pmtiles maps/index.json
+          git commit -m "Update offline maps (Protomaps build $BUILD)" || echo "No changes"
+          git push
