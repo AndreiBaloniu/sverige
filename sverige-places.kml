@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Sverige</name>
+<Folder><name>Stockholm</name>
+<Placemark><name>Stortorget</name><description>Sight. The oldest square in Stockholm, lined with gabled merchant houses. Tip: Christmas market in Advent. (Day 1)</description><Point><coordinates>18.0711,59.3251,0</coordinates></Point></Placemark>
+<Placemark><name>Kaffekoppen</name><description>Fika. Candlelit cellar café on Stortorget. Tip: Go downstairs to the vaults. (Day 1)</description><Point><coordinates>18.0706,59.325,0</coordinates></Point></Placemark>
+<Placemark><name>Royal Palace</name><description>Sight. Over 600 rooms. The Royal Armoury in the basement is free. Tip: Changing of the guard around midday. (Day 1)</description><Point><coordinates>18.0717,59.3268,0</coordinates></Point></Placemark>
+<Placemark><name>Riddarholmen quay</name><description>Sight. Quiet island quay with sunset views west over the water. Tip: Best at dusk. (Day 1)</description><Point><coordinates>18.0632,59.3247,0</coordinates></Point></Placemark>
+<Placemark><name>Vasa Museum</name><description>Museum. A complete 1628 warship, raised from the harbour in 1961. Tip: Go at opening time. (Day 2)</description><Point><coordinates>18.0914,59.328,0</coordinates></Point></Placemark>
+<Placemark><name>Skansen</name><description>Museum. Open-air museum of historic Swedish buildings and Nordic animals. Tip: Advent weekend Christmas market. (Day 2)</description><Point><coordinates>18.1037,59.3263,0</coordinates></Point></Placemark>
+<Placemark><name>Rosendals Trädgård</name><description>Fika. Biodynamic garden with a greenhouse café and bakery. Tip: Shorter hours in winter. (Day 2)</description><Point><coordinates>18.1258,59.3266,0</coordinates></Point></Placemark>
+<Placemark><name>Nordiska museet</name><description>Museum. Swedish everyday life and traditions in a palace-like hall. Tip: Great rainy-day museum. (Day 2)</description><Point><coordinates>18.0938,59.3292,0</coordinates></Point></Placemark>
+<Placemark><name>Monteliusvägen</name><description>Sight. Cliff-top path with a classic view of Gamla Stan. Tip: Free, open all hours. (Day 3)</description><Point><coordinates>18.0634,59.32,0</coordinates></Point></Placemark>
+<Placemark><name>Fotografiska</name><description>Museum. World-class photography exhibitions and a top-floor café with water views. Tip: Open late most evenings. (Day 3)</description><Point><coordinates>18.0857,59.3178,0</coordinates></Point></Placemark>
+<Placemark><name>Vete-Katten</name><description>Fika. A traditional konditori since 1928. Tip: Try the prinsesstårta. (Day 3)</description><Point><coordinates>18.0638,59.3354,0</coordinates></Point></Placemark>
+<Placemark><name>Café Saturnus</name><description>Fika. Parisian-style café famous for enormous cinnamon buns. Tip: Share one.</description><Point><coordinates>18.0748,59.3401,0</coordinates></Point></Placemark>
+<Placemark><name>Metro art (blue line)</name><description>Experience. Painted cave stations: Kungsträdgården, T-Centralen, Solna Centrum. Tip: One ticket, a whole gallery. (Day 3)</description><Point><coordinates>18.0718,59.3307,0</coordinates></Point></Placemark>
+<Placemark><name>Stockholm City Hall</name><description>Sight. Home of the Nobel banquet, with the gold mosaic Golden Hall. Tip: Climb the tower for a view.</description><Point><coordinates>18.0543,59.3275,0</coordinates></Point></Placemark>
+<Placemark><name>Drottningholm Palace</name><description>Sight. The royal family's home and a UNESCO site, with a perfectly preserved 18th-century theatre. Tip: Good winter alternative to the archipelago.</description><Point><coordinates>17.8867,59.3217,0</coordinates></Point></Placemark>
+<Placemark><name>Skinnarviksberget</name><description>Nature. Bare rock hill in the city centre with sunset views. Tip: Bring a picnic.</description><Point><coordinates>18.056,59.3196,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Archipelago</name>
+<Placemark><name>Vaxholm</name><description>Village. Wooden-house harbour town and island fortress. Tip: Bus 670 runs year-round. (Day 4, Day 4)</description><Point><coordinates>18.351,59.4024,0</coordinates></Point></Placemark>
+<Placemark><name>Fjäderholmarna</name><description>Village. The nearest archipelago islands, 25 min by boat. Crafts and smokehouses. Tip: Mostly summer season.</description><Point><coordinates>18.165,59.3256,0</coordinates></Point></Placemark>
+<Placemark><name>Grinda</name><description>Nature. Forest island with swimming rocks and an old inn. Tip: Summer is best.</description><Point><coordinates>18.562,59.411,0</coordinates></Point></Placemark>
+<Placemark><name>Sandhamn</name><description>Village. Sailing village on the outer edge of the archipelago. Tip: Stay overnight in summer.</description><Point><coordinates>18.9125,59.2873,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Uppsala</name>
+<Placemark><name>Uppsala Cathedral</name><description>Sight. The tallest church in the Nordics. Tip: Free entry. (Day 5)</description><Point><coordinates>17.6336,59.8582,0</coordinates></Point></Placemark>
+<Placemark><name>Güntherska</name><description>Fika. Old-fashioned konditori with velvet and chandeliers. Tip: Lunch and cake. (Day 5)</description><Point><coordinates>17.6378,59.8566,0</coordinates></Point></Placemark>
+<Placemark><name>Linnaeus Garden</name><description>Nature. Carl Linnaeus's 18th-century botanical garden and home. Tip: Garden is seasonal. (Day 5)</description><Point><coordinates>17.6339,59.8617,0</coordinates></Point></Placemark>
+<Placemark><name>Gamla Uppsala</name><description>Sight. Royal burial mounds from the 500s. Tip: Golden hour. (Day 5)</description><Point><coordinates>17.6302,59.8977,0</coordinates></Point></Placemark>
+<Placemark><name>Sigtuna</name><description>Village. Sweden's oldest town: church ruins, rune stones, tiny main street. Tip: Half-day trip.</description><Point><coordinates>17.723,59.617,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Dalarna</name>
+<Placemark><name>Falun Copper Mine</name><description>Museum. UNESCO mine and source of Falu red paint. Tip: Book the underground tour. (Day 6)</description><Point><coordinates>15.6141,60.5994,0</coordinates></Point></Placemark>
+<Placemark><name>Långbryggan, Rättvik</name><description>Nature. A 628 m wooden pier out into Lake Siljan. Tip: Sunset walk. (Day 6)</description><Point><coordinates>15.109,60.884,0</coordinates></Point></Placemark>
+<Placemark><name>Tällberg</name><description>Village. Hillside village of timber farmhouses above Siljan. Tip: Cozy inns.</description><Point><coordinates>15.005,60.824,0</coordinates></Point></Placemark>
+<Placemark><name>Nusnäs</name><description>Experience. Village where Dala horses are carved and painted by hand. Tip: Paint your own. (Day 7)</description><Point><coordinates>14.644,60.962,0</coordinates></Point></Placemark>
+<Placemark><name>Zorngården, Mora</name><description>Museum. Painter Anders Zorn's home and museum. Tip: Guided tours only. (Day 7)</description><Point><coordinates>14.547,61.005,0</coordinates></Point></Placemark>
+<Placemark><name>Carl Larsson-gården</name><description>Museum. The artist's home in Sundborn, the origin of the Swedish cozy-home look. Tip: The coziest house in Sweden.</description><Point><coordinates>15.781,60.656,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Gothenburg</name>
+<Placemark><name>Haga</name><description>Village. Historic café street of wooden and stone houses. Tip: Christmas market in Advent. (Day 8)</description><Point><coordinates>11.956,57.6985,0</coordinates></Point></Placemark>
+<Placemark><name>Café Husaren</name><description>Fika. Home of the giant Hagabullen cinnamon bun. Tip: Arrive early. (Day 9)</description><Point><coordinates>11.9548,57.6987,0</coordinates></Point></Placemark>
+<Placemark><name>Skansen Kronan</name><description>Sight. Hilltop fortress above Haga. Tip: Free view. (Day 9)</description><Point><coordinates>11.953,57.6955,0</coordinates></Point></Placemark>
+<Placemark><name>Feskekôrka</name><description>Sight. Fish market in a church-shaped hall. Tip: Fish soup lunch. (Day 9)</description><Point><coordinates>11.959,57.701,0</coordinates></Point></Placemark>
+<Placemark><name>Saluhallen</name><description>Experience. 19th-century market hall full of food stalls. Tip: Edible souvenirs. (Day 12)</description><Point><coordinates>11.966,57.705,0</coordinates></Point></Placemark>
+<Placemark><name>Röhsska Museum</name><description>Museum. Design, fashion and craft museum. Tip: Rainy-day pick. (Day 9)</description><Point><coordinates>11.973,57.699,0</coordinates></Point></Placemark>
+<Placemark><name>Slottsskogen</name><description>Nature. Huge city park with free animal enclosures. Tip: Seals at feeding time. (Day 9)</description><Point><coordinates>11.942,57.686,0</coordinates></Point></Placemark>
+<Placemark><name>Liseberg</name><description>Experience. Amusement park, and a lantern-lit Christmas market in winter. Tip: Check season dates. (Day 9)</description><Point><coordinates>11.992,57.695,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>West Coast</name>
+<Placemark><name>Saltholmen</name><description>Nature. Ferry terminal and bathing rocks at the end of tram 11. Tip: Gateway to the islands. (Day 10)</description><Point><coordinates>11.841,57.659,0</coordinates></Point></Placemark>
+<Placemark><name>Styrsö</name><description>Nature. Car-free island with coastal walking paths. Tip: City ticket works. (Day 10)</description><Point><coordinates>11.785,57.615,0</coordinates></Point></Placemark>
+<Placemark><name>Vrångö</name><description>Nature. Southernmost island with a nature reserve and sandy coves. Tip: Pack a lunch. (Day 10)</description><Point><coordinates>11.78,57.57,0</coordinates></Point></Placemark>
+<Placemark><name>Marstrand</name><description>Village. Car-free sailing town with Carlsten Fortress. Tip: Walk round the island. (Day 11, Day 11)</description><Point><coordinates>11.584,57.887,0</coordinates></Point></Placemark>
+<Placemark><name>Smögen</name><description>Village. Colourful boathouses along a long harbour boardwalk. Tip: Shrimp from the boats.</description><Point><coordinates>11.218,58.354,0</coordinates></Point></Placemark>
+<Placemark><name>Fjällbacka</name><description>Village. Fishing village under a granite cliff. Climb the Kungsklyftan ravine. Tip: Best by car.</description><Point><coordinates>11.286,58.599,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Lapland</name>
+<Placemark><name>Icehotel, Jukkasjärvi</name><description>Experience. A hotel rebuilt from river ice every winter by artists. Tip: Day visits possible.</description><Point><coordinates>20.594,67.849,0</coordinates></Point></Placemark>
+<Placemark><name>Kiruna</name><description>Village. Arctic mining town being moved east block by block. Tip: Base for dog sledding.</description><Point><coordinates>20.2253,67.8558,0</coordinates></Point></Placemark>
+<Placemark><name>Abisko National Park</name><description>Nature. Mountain valley famous for clear skies and northern lights. Tip: Night train stops here.</description><Point><coordinates>18.83,68.349,0</coordinates></Point></Placemark>
+<Placemark><name>Aurora Sky Station</name><description>Experience. Chairlift up Mt Nuolja to an aurora viewing station. Tip: Book ahead, dress very warm.</description><Point><coordinates>18.78,68.357,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Gotland</name>
+<Placemark><name>Visby</name><description>Village. Walled medieval town of church ruins and rose-covered cottages. Tip: Summer is liveliest.</description><Point><coordinates>18.295,57.639,0</coordinates></Point></Placemark>
+<Placemark><name>Fårö</name><description>Nature. Windswept island of limestone sea stacks (raukar). Tip: Free car ferry.</description><Point><coordinates>19.13,57.92,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Skåne</name>
+<Placemark><name>Ystad</name><description>Village. Half-timbered houses and cobbled streets on the south coast. Tip: Base for Österlen.</description><Point><coordinates>13.82,55.4295,0</coordinates></Point></Placemark>
+<Placemark><name>Ales Stenar</name><description>Sight. A 67 m stone ship on a sea cliff. Tip: Sunset.</description><Point><coordinates>14.054,55.383,0</coordinates></Point></Placemark>
+<Placemark><name>Kivik, Österlen</name><description>Village. Apple-orchard country with farm cafés. Tip: Autumn apple season.</description><Point><coordinates>14.23,55.68,0</coordinates></Point></Placemark>
+<Placemark><name>Malmö Lilla Torg</name><description>Sight. Cosy cobbled square of old half-timbered buildings. Tip: Evening drinks.</description><Point><coordinates>12.999,55.605,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>Småland</name>
+<Placemark><name>Kosta glassworks</name><description>Experience. Watch glassblowers in the Kingdom of Crystal. Tip: Hyttsill evenings.</description><Point><coordinates>15.396,56.844,0</coordinates></Point></Placemark>
+<Placemark><name>Astrid Lindgren's World</name><description>Experience. Theme park of Astrid Lindgren's stories in Vimmerby. Tip: Summer season.</description><Point><coordinates>15.853,57.661,0</coordinates></Point></Placemark>
+<Placemark><name>Kalmar Castle</name><description>Sight. Renaissance castle by the sea. Tip: Walk the old town too.</description><Point><coordinates>16.357,56.658,0</coordinates></Point></Placemark>
+</Folder>
+<Folder><name>North</name>
+<Placemark><name>Åre</name><description>Village. Sweden's mountain village: skiing in winter, hiking in summer. Tip: Ride the cable car.</description><Point><coordinates>13.081,63.399,0</coordinates></Point></Placemark>
+<Placemark><name>High Coast (Skuleberget)</name><description>Nature. UNESCO coastline still rising from the sea after the Ice Age. Tip: Hike or take the lift up.</description><Point><coordinates>18.38,63.09,0</coordinates></Point></Placemark>
+</Folder>
+</Document></kml>
