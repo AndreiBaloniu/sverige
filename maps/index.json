@@ -1,0 +1,70 @@
+{
+  "build": "20261107",
+  "regions": [
+    {
+      "id": "sweden",
+      "name": "Sweden overview",
+      "file": "maps/sweden.pmtiles",
+      "bbox": [
+        10.9,
+        55.2,
+        24.2,
+        69.1
+      ],
+      "maxzoom": 9,
+      "bytes": 84059189
+    },
+    {
+      "id": "stockholm",
+      "name": "Stockholm & archipelago",
+      "file": "maps/stockholm.pmtiles",
+      "bbox": [
+        17.75,
+        59.18,
+        18.45,
+        59.45
+      ],
+      "maxzoom": 15,
+      "bytes": 41124877
+    },
+    {
+      "id": "uppsala",
+      "name": "Uppsala & Sigtuna",
+      "file": "maps/uppsala.pmtiles",
+      "bbox": [
+        17.55,
+        59.58,
+        17.8,
+        59.92
+      ],
+      "maxzoom": 15,
+      "bytes": 11268624
+    },
+    {
+      "id": "gothenburg",
+      "name": "Gothenburg & islands",
+      "file": "maps/gothenburg.pmtiles",
+      "bbox": [
+        11.5,
+        57.55,
+        12.1,
+        57.92
+      ],
+      "maxzoom": 15,
+      "bytes": 35583184
+    },
+    {
+      "id": "dalarna",
+      "name": "Dalarna: Falun, Rättvik, Mora",
+      "file": "maps/dalarna.pmtiles",
+      "bbox": [
+        14.4,
+        60.55,
+        15.85,
+        61.05
+      ],
+      "maxzoom": 14,
+      "bytes": 16102042
+    }
+  ]
+}
