@@ -517,8 +517,7 @@
     const tripPlaces = new Set();
     S.trip.forEach((id) => { const d = dayById(id); if (d) stopsFor(d).forEach((s) => s.place && tripPlaces.add(s.place)); });
     let list = allPlaces().filter(hasGeo);
-    if (focusIds) list = list.filter((p) => focusIds.includes(p.id));
-    else if (S.mapFilter === "saved") list = list.filter((p) => S.favs[p.id]);
+    if (S.mapFilter === "saved") list = list.filter((p) => S.favs[p.id]);
     else if (S.mapFilter === "trip") list = list.filter((p) => tripPlaces.has(p.id));
     return { type: "FeatureCollection", features: list.map((p) => ({ type: "Feature", geometry: { type: "Point", coordinates: [p.lon, p.lat] },
       properties: { id: p.id, name: p.name, color: p.custom ? "#5C7FA8" : CAT_PIN[p.cat] || "#888", saved: !!S.favs[p.id] } })) };
@@ -563,7 +562,7 @@
 
   function renderMap() {
     $("#mapWrap").hidden = false;
-    $$("#mapSeg button").forEach((b) => b.classList.toggle("on", !focusIds && b.dataset.mf === (S.mapFilter || "all")));
+    $$("#mapSeg button").forEach((b) => b.classList.toggle("on", b.dataset.mf === (S.mapFilter || "all")));
     layoutMap();
     ensureMap().then(() => { layoutMap(); updatePins(); applyFocus(); });
   }
@@ -573,15 +572,16 @@
   }));
 
   function applyFocus() {
-    if (!map || !map.loaded() || !map.getSource("pins")) return;
+    if (!map || !map.getSource("pins")) return;
     updatePins();
-    const pts = pinData().features.map((f) => f.geometry.coordinates);
+    if (!focusIds) return;
+    const pts = focusIds.map(placeById).filter((p) => p && hasGeo(p)).map((p) => [p.lon, p.lat]);
     if (!focusIds || !pts.length) return;
     if (pts.length === 1) map.flyTo({ center: pts[0], zoom: 15, duration: 600 });
     else { const b = pts.reduce((bb, c) => bb.extend(c), new maplibregl.LngLatBounds(pts[0], pts[0])); map.fitBounds(b, { padding: 60, maxZoom: 15, duration: 600 }); }
     focusIds = null;
   }
-  function showOnMap(ids) { focusIds = ids; closeSheet(); go("map"); }
+  function showOnMap(ids) { focusIds = ids; S.mapFilter = "all"; closeSheet(); go("map"); }
 
   $("#locBtn").onclick = () => {
     const btn = $("#locBtn");

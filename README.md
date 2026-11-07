@@ -35,6 +35,12 @@ Use **Notes → Copy backup** now and then and paste it into Apple Notes.
 ## Using it
 - **Plan:** tap + on the day ideas you want; they move into "Our trip". Reorder with the arrows. Open a day to tick off stops, add your own stops, or "Edit day" to hide suggestions you don't want. "New day" creates a blank day of your own.
 - **Places:** grouped by region, filter by type or Saved, search, or sort by distance. "Add a place" saves your own spots (optionally with your current GPS location). Any place can be added to a day.
+- **Map:** offline street map with all places as pins (All / Our trip / Saved) and your live location. Tap the download button on the map to save regions for offline use (once per phone, on Wi-Fi). "On map" on a place or day jumps there.
 - **Guide:** essentials, fika, phrases and words, seasons.
 - **My trip:** start date, saved and added places, journal, packing list, backup.
 - The search button in the top corner searches everything at once.
+
+## Offline maps
+Map files are built by the **Build offline maps** GitHub Action from [Protomaps](https://protomaps.com) / OpenStreetMap data.
+Edit `maps/regions.txt` (id | label | bbox | max zoom) and push to rebuild them, or run the action manually.
+Map data © OpenStreetMap contributors. Rendering: MapLibre GL JS (BSD-3) and PMTiles.
