@@ -606,7 +606,7 @@
         else if (walk && following && S.tab === "map") map.easeTo({ center: [here.lon, here.lat], duration: 500 });
       }
       onPosition();
-    }, () => { toast("Couldn't get your location"); stopWatch(); }, { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 });
+    }, (err) => { if (err.code === 1) { toast("Location is turned off for this app"); stopWatch(); } }, { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 });
   }
   function stopWatch() {
     if (watchId !== null) navigator.geolocation.clearWatch(watchId);

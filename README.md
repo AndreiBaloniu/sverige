@@ -36,6 +36,7 @@ Use **Notes → Copy backup** now and then and paste it into Apple Notes.
 - **Plan:** tap + on the day ideas you want; they move into "Our trip". Reorder with the arrows. Open a day to tick off stops, add your own stops, or "Edit day" to hide suggestions you don't want. "New day" creates a blank day of your own.
 - **Places:** grouped by region, filter by type or Saved, search, or sort by distance. "Add a place" saves your own spots (optionally with your current GPS location). Any place can be added to a day.
 - **Map:** offline street map with all places as pins (All / Our trip / Saved) and your live location. Tap the download button on the map to save regions for offline use (once per phone, on Wi-Fi). "On map" on a place or day jumps there.
+- **Search & walking directions (Stockholm, offline):** search any café, shop, museum, station, street or address in central Stockholm, then tap Walk for a route on foot with step-by-step instructions that follows your GPS and reroutes if you go off course. Data: `maps/stockholm-walk.bin` + `maps/stockholm-search.json`, built by the **Build Stockholm directions & search** action from OpenStreetMap (Geofabrik).
 - **Guide:** essentials, fika, phrases and words, seasons.
 - **My trip:** start date, saved and added places, journal, packing list, backup.
 - The search button in the top corner searches everything at once.
