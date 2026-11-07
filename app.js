@@ -31,7 +31,7 @@
     tab: "plan", trip: [], done: {}, hidden: {}, notes: {}, favs: {}, start: "",
     customStops: {}, customPlaces: [], customDays: [],
     pack: D.packing.map((t) => ({ t, d: false })), journal: [],
-    q: "", region: "All", cat: "All", onlyFav: false, guide: "essentials"
+    q: "", region: "All", cat: "All", onlyFav: false, guide: "essentials", mapFilter: "all"
   };
   let S = Object.assign({}, defaults);
   try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign({}, defaults, JSON.parse(raw)); } catch (e) {}
@@ -88,7 +88,7 @@
   window.addEventListener("scroll", () => $("#hdr").classList.toggle("scrolled", window.scrollY > 4), { passive: true });
 
   // ---------- navigation ----------
-  const TITLES = { plan: "Plan", places: "Places", guide: "Guide", mine: "My trip" };
+  const TITLES = { plan: "Plan", map: "Map", places: "Places", guide: "Guide", mine: "My trip" };
   function go(tab, opts = {}) {
     if (tab) S.tab = tab;
     route = { day: opts.day || null };
@@ -105,6 +105,8 @@
     $("#backTxt").textContent = TITLES[S.tab];
     $("#title").textContent = sub ? "" : TITLES[S.tab];
     const m = $("#main");
+    if (S.tab === "map") { m.innerHTML = ""; m.style.display = "none"; renderMap(); return; }
+    m.style.display = ""; $("#mapWrap").hidden = true;
     m.innerHTML = '<div class="view"></div>';
     const v = m.firstChild;
     if (S.tab === "plan" && route.day) renderDay(v, route.day);
@@ -182,7 +184,7 @@
         ${idx >= 0 ? `<button class="btn plain" id="tripToggle">Remove from trip</button>` : `<button class="btn" id="tripToggle">${I("plus", "sm")}Add to our trip</button>`}
         <button class="btn ${editMode ? "" : "soft"}" id="editToggle">${editMode ? "Done editing" : "Edit day"}</button>
       </div>
-      <div class="section-t"><span class="grow">Schedule</span><button class="textbtn" id="addStop">${I("plus", "sm")}Add stop</button></div>
+      <div class="section-t"><span class="grow">Schedule</span>${stops.some((x) => x.place && placeById(x.place) && hasGeo(placeById(x.place))) ? `<button class="textbtn" id="dayMap" style="margin-right:12px">${I("map", "sm")}Map</button>` : ""}<button class="textbtn" id="addStop">${I("plus", "sm")}Add stop</button></div>
       <div class="list">${stops.length ? stops.map((s) => stopRow(day, s)).join("") : `<div class="empty">No stops yet. Add your first one.</div>`}</div>
       ${editMode ? `<p class="muted small" style="margin:0 4px">Hide suggestions you don't want; edit or delete the stops you added.</p>` : ""}
       ${orderInfo.length ? `<div class="section-t">Good to know</div><div class="card"><dl class="kv" style="margin:0">${orderInfo.map(([k, val]) => `<dt>${esc(k)}</dt><dd>${esc(val)}</dd>`).join("")}</dl></div>` : ""}
@@ -193,6 +195,7 @@
     $("#tripToggle", v).onclick = () => { if (idx >= 0) S.trip.splice(idx, 1); else S.trip.push(id); save(); redraw(); toast(idx >= 0 ? "Removed from your trip" : "Added to your trip"); };
     $("#editToggle", v).onclick = () => { editMode = !editMode; redraw(); };
     $("#addStop", v).onclick = () => stopForm(day);
+    const dm = $("#dayMap", v); if (dm) dm.onclick = () => showOnMap(stopsFor(day).map((x) => x.place).filter(Boolean));
     $("#dayNote", v).oninput = (e) => { S.notes[id] = e.target.value; save(); };
     $$("[data-chk]", v).forEach((b) => (b.onclick = () => { const k = b.dataset.chk; S.done[k] = !S.done[k]; if (!S.done[k]) delete S.done[k]; save(); redraw(); }));
     $$("[data-hide]", v).forEach((b) => (b.onclick = () => { const k = b.dataset.hide; S.hidden[k] = !S.hidden[k]; if (!S.hidden[k]) delete S.hidden[k]; save(); redraw(); }));
@@ -329,14 +332,16 @@
       ${days.length ? `<p class="muted small" style="margin:6px 0 0">In: ${days.map((d) => esc(d.title)).join(", ")}</p>` : ""}
       <div class="btnrow" style="margin-top:16px">
         <button class="btn ${S.favs[id] ? "plain" : "soft"}" id="pFav">${I(S.favs[id] ? "bookmark-fill" : "bookmark", "sm")}${S.favs[id] ? "Saved" : "Save"}</button>
-        <a class="btn soft" href="${mapsUrl(p)}" target="_blank" rel="noopener" style="text-decoration:none">${I("map", "sm")}Maps</a>
+        ${hasGeo(p) ? `<button class="btn soft" id="pShow">${I("pin", "sm")}On map</button>` : ""}
       </div>
+      <a class="textbtn small" href="${mapsUrl(p)}" target="_blank" rel="noopener" style="text-decoration:none;margin-top:10px">${I("nav", "sm")}Directions in Apple Maps</a>
       <label class="f" style="margin-top:16px">Add to a day</label>
       <div style="display:flex;gap:8px"><select id="pDay" style="flex:1">${dayOpts}</select><button class="btn" id="pAdd">Add</button></div>
       ${p.custom ? `<div class="btnrow" style="margin-top:16px"><button class="btn plain" id="pEdit">${I("edit", "sm")}Edit</button><button class="btn danger" id="pDel">${I("trash", "sm")}Delete</button></div>` : ""}
       <button class="btn plain full" data-close style="margin-top:10px">Close</button>`,
       (s) => {
         $("#pFav", s).onclick = () => { S.favs[id] = !S.favs[id]; if (!S.favs[id]) delete S.favs[id]; save(); placeSheet(id); redraw(); };
+        const sh = $("#pShow", s); if (sh) sh.onclick = () => showOnMap([id]);
         $("#pAdd", s).onclick = () => {
           const dId = $("#pDay", s).value; (S.customStops[dId] = S.customStops[dId] || []).push({ id: uid(), t: "", name: p.name, blurb: p.blurb || "", place: id });
           save(); closeSheet(); redraw(); toast("Added to " + dayById(dId).title);
@@ -474,6 +479,172 @@
         };
       });
   };
+
+  // ---------- MAP ----------
+  const MAP_CACHE = "sverige-maps";
+  const CAT_PIN = { Sight: "#5C7FA8", Museum: "#7D6FB5", Fika: "#C98260", Nature: "#5E9470", Village: "#B39A3E", Experience: "#B86A85" };
+  const abs = (p) => new URL(p, location.href).href;
+  let map = null, mapIndex = null, focusIds = null, watchId = null, meFirst = true;
+
+  async function loadMapIndex() {
+    try { const r = await fetch("maps/index.json", { cache: "no-cache" }); if (r.ok) mapIndex = await r.json(); } catch (e) {}
+    if (!mapIndex) { try { const c = await caches.match(abs("maps/index.json")); if (c) mapIndex = await c.json(); } catch (e) {} }
+    return mapIndex;
+  }
+  async function isDownloaded(r) { try { const c = await caches.open(MAP_CACHE); return !!(await c.match(abs(r.file))); } catch (e) { return false; } }
+
+  async function buildStyle() {
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const T = await (await fetch(`maps/layers-${dark ? "dark" : "light"}.json`)).json();
+    const idx = mapIndex || { regions: [] };
+    const clone = (o) => JSON.parse(JSON.stringify(o));
+    const src = (r) => ({ type: "vector", url: "pmtiles://" + abs(r.file), attribution: '<a href="https://openstreetmap.org/copyright">© OpenStreetMap</a> · <a href="https://protomaps.com">Protomaps</a>' });
+    const sources = {}, layers = [clone(T.find((l) => l.id === "background"))];
+    const rest = T.filter((l) => l.id !== "background");
+    const over = idx.regions.find((r) => r.id === "sweden");
+    if (over) {
+      sources.sweden = src(over);
+      rest.forEach((l) => { const c = clone(l); c.id = "sweden-" + l.id; c.source = "sweden"; if (c.type === "symbol") c.maxzoom = Math.min(c.maxzoom ?? 24, 10); layers.push(c); });
+    }
+    idx.regions.filter((r) => r.id !== "sweden").forEach((r) => {
+      sources[r.id] = src(r);
+      rest.forEach((l) => { const c = clone(l); c.id = r.id + "-" + l.id; c.source = r.id; c.minzoom = Math.max(c.minzoom || 0, over ? 10 : 0); layers.push(c); });
+    });
+    return { version: 8, glyphs: abs("fonts/") + "{fontstack}/{range}.pbf", sprite: abs("maps/sprites/" + (dark ? "dark" : "light")), sources, layers };
+  }
+
+  function pinData() {
+    const tripPlaces = new Set();
+    S.trip.forEach((id) => { const d = dayById(id); if (d) stopsFor(d).forEach((s) => s.place && tripPlaces.add(s.place)); });
+    let list = allPlaces().filter(hasGeo);
+    if (focusIds) list = list.filter((p) => focusIds.includes(p.id));
+    else if (S.mapFilter === "saved") list = list.filter((p) => S.favs[p.id]);
+    else if (S.mapFilter === "trip") list = list.filter((p) => tripPlaces.has(p.id));
+    return { type: "FeatureCollection", features: list.map((p) => ({ type: "Feature", geometry: { type: "Point", coordinates: [p.lon, p.lat] },
+      properties: { id: p.id, name: p.name, color: p.custom ? "#5C7FA8" : CAT_PIN[p.cat] || "#888", saved: !!S.favs[p.id] } })) };
+  }
+  function updatePins() { if (map && map.getSource("pins")) map.getSource("pins").setData(pinData()); }
+  function addPinLayers() {
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    map.addSource("pins", { type: "geojson", data: pinData() });
+    map.addSource("me", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    map.addLayer({ id: "pins-halo", type: "circle", source: "pins", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 6, 12, 11], "circle-color": dark ? "#26262A" : "#ffffff" } });
+    map.addLayer({ id: "pins", type: "circle", source: "pins", paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 4, 12, 8], "circle-color": ["get", "color"], "circle-stroke-width": ["case", ["get", "saved"], 2.5, 0], "circle-stroke-color": dark ? "#EDEDF0" : "#2B2B30" } });
+    map.addLayer({ id: "pins-label", type: "symbol", source: "pins", minzoom: 10.5,
+      layout: { "text-field": ["get", "name"], "text-font": ["Noto Sans Medium"], "text-size": 13, "text-offset": [0, 1.1], "text-anchor": "top", "text-optional": true },
+      paint: { "text-color": dark ? "#EDEDF0" : "#2B2B30", "text-halo-color": dark ? "#202024" : "#ffffff", "text-halo-width": 1.6 } });
+    map.addLayer({ id: "me-halo", type: "circle", source: "me", paint: { "circle-radius": 14, "circle-color": "#5C7FA8", "circle-opacity": 0.2 } });
+    map.addLayer({ id: "me", type: "circle", source: "me", paint: { "circle-radius": 6, "circle-color": "#5C7FA8", "circle-stroke-width": 2.5, "circle-stroke-color": "#fff" } });
+    map.on("click", "pins", (e) => { const f = e.features && e.features[0]; if (f) placeSheet(f.properties.id); });
+    map.on("mouseenter", "pins", () => (map.getCanvas().style.cursor = "pointer"));
+    map.on("mouseleave", "pins", () => (map.getCanvas().style.cursor = ""));
+  }
+
+  async function ensureMap() {
+    if (map) return;
+    if (!window.maplibregl) { $("#map").innerHTML = '<div class="empty" style="padding-top:120px">The map couldn\'t load on this device.</div>'; return; }
+    if (window.pmtiles && !ensureMap.proto) { const proto = new pmtiles.Protocol(); maplibregl.addProtocol("pmtiles", proto.tile); ensureMap.proto = true; }
+    await loadMapIndex();
+    const style = await buildStyle();
+    map = new maplibregl.Map({ container: "map", style, center: [15.5, 61.5], zoom: 3.6, minZoom: 3, maxZoom: 17.5,
+      attributionControl: false, dragRotate: false, pitchWithRotate: false, touchPitch: false });
+    map.touchZoomRotate.disableRotation();
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left");
+    map.on("load", () => { addPinLayers(); applyFocus(); });
+    map.on("error", () => {}); // missing offline tiles are expected; keep quiet
+    mapNote();
+  }
+
+  function layoutMap() {
+    const w = $("#mapWrap"); w.style.top = $("#hdr").offsetHeight + "px"; w.style.bottom = $("nav").offsetHeight + "px";
+    if (map) map.resize();
+  }
+  window.addEventListener("resize", () => S.tab === "map" && layoutMap());
+
+  function renderMap() {
+    $("#mapWrap").hidden = false;
+    $$("#mapSeg button").forEach((b) => b.classList.toggle("on", !focusIds && b.dataset.mf === (S.mapFilter || "all")));
+    layoutMap();
+    ensureMap().then(() => { layoutMap(); updatePins(); applyFocus(); });
+  }
+  $$("#mapSeg button").forEach((b) => (b.onclick = () => {
+    focusIds = null; S.mapFilter = b.dataset.mf; save(); renderMap();
+    const n = pinData().features.length; if (!n) toast(S.mapFilter === "saved" ? "No saved places yet" : "No places linked to your trip days yet");
+  }));
+
+  function applyFocus() {
+    if (!map || !map.loaded() || !map.getSource("pins")) return;
+    updatePins();
+    const pts = pinData().features.map((f) => f.geometry.coordinates);
+    if (!focusIds || !pts.length) return;
+    if (pts.length === 1) map.flyTo({ center: pts[0], zoom: 15, duration: 600 });
+    else { const b = pts.reduce((bb, c) => bb.extend(c), new maplibregl.LngLatBounds(pts[0], pts[0])); map.fitBounds(b, { padding: 60, maxZoom: 15, duration: 600 }); }
+    focusIds = null;
+  }
+  function showOnMap(ids) { focusIds = ids; closeSheet(); go("map"); }
+
+  $("#locBtn").onclick = () => {
+    const btn = $("#locBtn");
+    if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; btn.classList.remove("on"); if (map) map.getSource("me").setData({ type: "FeatureCollection", features: [] }); return; }
+    if (!navigator.geolocation) return toast("Location isn't available here");
+    btn.classList.add("on"); meFirst = true; toast("Finding you (GPS works offline)");
+    watchId = navigator.geolocation.watchPosition((p) => {
+      here = { lat: p.coords.latitude, lon: p.coords.longitude };
+      if (map && map.getSource("me")) {
+        map.getSource("me").setData({ type: "Feature", geometry: { type: "Point", coordinates: [here.lon, here.lat] }, properties: {} });
+        if (meFirst) { map.flyTo({ center: [here.lon, here.lat], zoom: Math.max(map.getZoom(), 14), duration: 600 }); meFirst = false; }
+      }
+    }, () => { toast("Couldn't get your location"); btn.classList.remove("on"); watchId = null; }, { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 });
+  };
+
+  async function mapNote() {
+    const n = $("#mapNote");
+    if (!mapIndex || !mapIndex.regions.length) { n.hidden = false; n.innerHTML = `<div style="flex:1">The street maps are still being prepared. The pins work already.</div>`; return; }
+    const got = await Promise.all(mapIndex.regions.map(isDownloaded));
+    if (got.some(Boolean)) { n.hidden = true; return; }
+    n.hidden = false;
+    n.innerHTML = `<div style="flex:1">Download the maps to use them without internet.</div><button class="btn sm" id="noteDl">Download</button>`;
+    $("#noteDl").onclick = offlineSheet;
+  }
+
+  const MB = (b) => (b / 1048576).toFixed(b < 10485760 ? 1 : 0) + " MB";
+  async function offlineSheet() {
+    await loadMapIndex();
+    if (!mapIndex || !mapIndex.regions.length) return openSheet(`<h2>Offline maps</h2><p class="muted">The map files aren't ready yet. Try again a bit later while online.</p><button class="btn plain full" data-close>Close</button>`);
+    const states = await Promise.all(mapIndex.regions.map(isDownloaded));
+    let est = ""; try { const e = await navigator.storage.estimate(); est = `Using ${MB(e.usage || 0)} on this phone.`; } catch (e) {}
+    const missing = mapIndex.regions.filter((r, i) => !states[i]);
+    openSheet(`<h2>Offline maps</h2><p class="muted small" style="margin:0 0 12px">Download once while online (Wi-Fi recommended). After that the map works anywhere. ${est}</p>
+      <div class="list">${mapIndex.regions.map((r, i) => `<div class="row" style="display:block">
+        <div style="display:flex;align-items:center;gap:10px"><div class="main"><div class="t">${esc(r.name)}</div><div class="s">${MB(r.bytes)}${states[i] ? " · downloaded" : ""}</div></div>
+        ${states[i] ? `<button class="btn plain sm" data-rm="${r.id}">Remove</button>` : `<button class="btn soft sm" data-dl="${r.id}">Download</button>`}</div>
+        <div class="progress" id="pg-${r.id}" hidden><i></i></div></div>`).join("")}</div>
+      ${missing.length > 1 ? `<button class="btn full" id="dlAll">Download all (${MB(missing.reduce((a, r) => a + r.bytes, 0))})</button>` : ""}
+      <p class="muted small" style="margin-top:12px">Map data © OpenStreetMap contributors, via Protomaps. Map built ${esc(String(mapIndex.build || "").replace(/(\d{4})(\d\d)(\d\d)/, "$1-$2-$3"))}.</p>
+      <button class="btn plain full" data-close style="margin-top:6px">Close</button>`,
+      (s) => {
+        const dl = async (r) => {
+          const pg = $("#pg-" + r.id, s), bar = pg && pg.firstElementChild; if (pg) pg.hidden = false;
+          const res = await fetch(r.file, { cache: "no-store" }); if (!res.ok) throw new Error("HTTP " + res.status);
+          const total = +res.headers.get("content-length") || r.bytes; const rd = res.body.getReader(); const parts = []; let got = 0;
+          for (;;) { const { done, value } = await rd.read(); if (done) break; parts.push(value); got += value.length; if (bar) bar.style.width = Math.min(100, (got / total) * 100) + "%"; }
+          const blob = new Blob(parts, { type: "application/octet-stream" });
+          const c = await caches.open(MAP_CACHE);
+          await c.put(abs(r.file), new Response(blob, { headers: { "Content-Type": "application/octet-stream", "Content-Length": String(blob.size) } }));
+        };
+        const run = async (list) => {
+          $$("button", s).forEach((b) => (b.disabled = true));
+          try { for (const r of list) await dl(r); toast("Maps saved for offline"); }
+          catch (e) { toast("Download failed. Check your connection"); }
+          if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+          offlineSheet(); mapNote(); if (map) { map.remove(); map = null; if (S.tab === "map") renderMap(); }
+        };
+        $$("[data-dl]", s).forEach((b) => (b.onclick = () => run([mapIndex.regions.find((r) => r.id === b.dataset.dl)])));
+        const all = $("#dlAll", s); if (all) all.onclick = () => run(missing);
+        $$("[data-rm]", s).forEach((b) => (b.onclick = async () => { const r = mapIndex.regions.find((x) => x.id === b.dataset.rm); const c = await caches.open(MAP_CACHE); await c.delete(abs(r.file)); toast("Removed"); offlineSheet(); mapNote(); }));
+      });
+  }
+  $("#dlBtn").onclick = offlineSheet;
 
   // ---------- offline ----------
   function offline(ok, msg) { $("#offDot").classList.toggle("ok", ok); $("#offTxt").textContent = msg; }
