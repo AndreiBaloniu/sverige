@@ -1,0 +1,57 @@
+name: Build Stockholm directions & search
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["tools/build_nav.py", ".github/workflows/nav.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nav
+  cancel-in-progress: true
+
+env:
+  BBOX: "17.85,59.27,18.20,59.39"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq osmium-tool
+          pip install osmium
+
+      - name: Download OpenStreetMap data for Sweden
+        run: |
+          curl -sSfL -o sweden.osm.pbf https://download.geofabrik.de/europe/sweden-latest.osm.pbf
+          ls -la sweden.osm.pbf
+          osmium extract -b "$BBOX" --strategy complete_ways sweden.osm.pbf -o sthlm.osm.pbf --overwrite
+          ls -la sthlm.osm.pbf
+
+      - name: Build walking graph and search index
+        run: |
+          python3 tools/build_nav.py sthlm.osm.pbf maps
+          python3 - <<'PY'
+          import json, os, datetime
+          files = ["maps/stockholm-walk.bin", "maps/stockholm-search.json"]
+          info = {"id": "stockholm-nav", "name": "Stockholm walking directions & search", "files": files,
+                  "bytes": sum(os.path.getsize(f) for f in files), "bbox": [float(x) for x in os.environ["BBOX"].split(",")],
+                  "build": datetime.date.today().strftime("%Y%m%d")}
+          json.dump(info, open("maps/nav.json", "w"), indent=2)
+          print(json.dumps(info, indent=2))
+          PY
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add maps/stockholm-walk.bin maps/stockholm-search.json maps/nav.json
+          git commit -m "Update Stockholm directions & search data" || exit 0
+          for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
